@@ -6,7 +6,7 @@ using namespace std;
 class Human
 {
 private:
-
+    static long counter;
 public:
     int age;
     int weight;
@@ -21,6 +21,8 @@ public:
     Human(/* args */);
     ~Human();
 };
+
+long Human::counter {5}; 
 
 Human::Human(/* args */)
 {
@@ -48,5 +50,5 @@ int main (void)
     Human secondHuman;
     secondHuman.Print();
 
-    return EXIT_SUCCESS;
+    return 0;
 }

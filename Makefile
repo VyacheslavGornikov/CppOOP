@@ -7,11 +7,11 @@ OBJ_DIR = $(BIN_DIR)/obj
 TEST_FILES_DIR = $(BIN_DIR)/test_files
 
 # Находим все .c файлы в src
-SRCS = $(wildcard $(SRC_DIR)/*.c)
+SRCS = $(wildcard $(SRC_DIR)/*.cpp)
 
 
 OBJ_CUR = \
-	$(OBJ_DIR)/class4.o
+	$(OBJ_DIR)/oop_3_5_7.o
 
 # Цели сборки по умолчанию
 TARGETS = my_prog
@@ -19,7 +19,7 @@ TARGETS = my_prog
 # Компилятор и флаги
 CC = g++
 WARN_FLAGS = -Wall -Werror
-CFLAGS = -I$(INC_DIR) $(WARN_FLAGS)
+CFLAGS = -I$(INC_DIR) $(WARN_FLAGS) -g
 
 # Правило для цели сборки по умолчанию
 all: $(TARGETS)
