@@ -11,7 +11,7 @@ SRCS = $(wildcard $(SRC_DIR)/*.cpp)
 
 
 OBJ_CUR = \
-	$(OBJ_DIR)/oop_3_6_7.o
+	$(OBJ_DIR)/oop_3_7_7.o
 
 # Цели сборки по умолчанию
 TARGETS = my_prog
