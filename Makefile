@@ -11,7 +11,7 @@ SRCS = $(wildcard $(SRC_DIR)/*.cpp)
 
 
 OBJ_CUR = \
-	$(OBJ_DIR)/oop_4_4_6.o
+	$(OBJ_DIR)/oop_6_5_1_linked_list_smart.o
 
 # Цели сборки по умолчанию
 TARGETS = my_prog
@@ -19,7 +19,8 @@ TARGETS = my_prog
 # Компилятор и флаги
 CC = g++
 WARN_FLAGS = -Wall -Werror
-CFLAGS = -I$(INC_DIR) $(WARN_FLAGS) -g
+STD_FLAG = -std=c++17
+CFLAGS = -I$(INC_DIR) $(STD_FLAG) $(WARN_FLAGS) -g
 
 # Правило для цели сборки по умолчанию
 all: $(TARGETS)
