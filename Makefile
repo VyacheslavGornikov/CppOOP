@@ -11,7 +11,7 @@ SRCS = $(wildcard $(SRC_DIR)/*.cpp)
 
 
 OBJ_CUR = \
-	$(OBJ_DIR)/oop_6_5_1_linked_list_smart.o
+	$(OBJ_DIR)/oop_6_5_2_double_linked_list.o
 
 # Цели сборки по умолчанию
 TARGETS = my_prog
