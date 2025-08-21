@@ -35,6 +35,7 @@ class LinkedList {
     NodePtr<T> head = nullptr;
     NodePtr<T> tail = nullptr;
     size_t size = 0;
+    NodePtr<T> get_node_at_index(size_t index);
 public:
     LinkedList() = default;
     LinkedList(const LinkedList&) = delete;
@@ -54,6 +55,20 @@ public:
     void remove(size_t index);
     void insert(size_t index, const T& data);
 };
+
+template <typename T>
+NodePtr<T> LinkedList<T>::get_node_at_index(size_t index)
+{
+    auto current = head;
+    size_t count = 0;
+
+    while (count < index) {
+        current = current->get_next();
+        count++;
+    }
+
+    return current;
+}
 
 template <typename T>
 void LinkedList<T>::push_back(const T& data) {
@@ -91,14 +106,8 @@ void LinkedList<T>::pop_back() {
     if (head == tail) {
         head = tail = nullptr;
     } else {
-        auto current = head;
-        while (current->get_next() != tail) {
-            current = current->get_next();
-        }
-        (current->get_next())->set_prev(nullptr);
-        current->set_next(nullptr);
-
-        tail = current;
+        tail = tail->get_prev();
+        tail->set_next(nullptr);
     }
     size--;
 }
@@ -123,13 +132,7 @@ T& LinkedList<T>::operator[](size_t index) {
     if (index >= size)
         throw LinkedListIndexError("Invalid element index.");
 
-    auto current = head;
-    size_t count = 0;
-
-    while (count < index) {
-        current = current->get_next();
-        count++;
-    }
+    auto current = get_node_at_index(index);
 
     return const_cast<T&>(current->get_data());
 }
@@ -140,13 +143,7 @@ void LinkedList<T>::remove(size_t index)
     if (index >= size)
         throw LinkedListIndexError("Invalid element index.");
 
-    auto current = head;
-    size_t count = 0;
-
-    while (count < index) {
-        current = current->get_next();
-        count++;
-    }
+    auto current = get_node_at_index(index);
 
     if (head == tail)
     {
@@ -171,13 +168,38 @@ void LinkedList<T>::remove(size_t index)
         next->set_prev(prev);
     }
 
-    size--:
+    size--;
 }
 
 template <typename T>
 void LinkedList<T>::insert(size_t index, const T& data)
 {
+    if (index > size)
+        throw LinkedListIndexError("Invalid element index.");
 
+
+
+    if (index == 0)
+    {
+        push_front(data);
+    }
+    else if (index == size)
+    {
+        push_back(data);
+    }
+    else
+    {
+        auto new_node = std::make_shared<Object<T>>(data);
+        auto current = get_node_at_index(index);
+        auto prev = current->get_prev();
+
+        prev->set_next(new_node);
+        new_node->set_prev(prev);
+        new_node->set_next(current);
+        current->set_prev(new_node);
+
+        size++;
+    }
 }
 
 struct Complex {
@@ -185,44 +207,52 @@ struct Complex {
 };
 
 int main() {
-    LinkedList<Complex> lst;
+    LinkedList<std::string> lst; // создание пустого двусвязного списка
 
-    lst.push_back(Complex{1, 2});
-    lst.push_back(Complex{3, 4});
-    lst.push_front(Complex{-1, -2});
-    lst.pop_back();
-    lst.pop_front();
+    lst.push_back("hello"); // добавление элемента в конец
+    lst.push_back("C++");
+    lst.push_front("OOP"); // добавление элемента в начало
+    lst.push_front("Balakirev");
+    lst.push_front("Sergey");
+    lst.pop_back(); // удаление последнего элемента
+    lst.pop_front(); // удаление первого элемента
 
-    Complex d = lst[0];
-    std::cout << "Complex d: " << d.re << " " << d.im << std::endl;
-    lst[0] = Complex{5, 8};
+    size_t indx = 1;
 
-    LinkedList<int> lst_int;
-    lst_int.push_back(1);
-    lst_int.push_back(2);
-    lst_int.push_back(3);
+    lst.remove(indx); // удаление элемента по индексу indx (индекс с нуля: 0, 1, ...)
+    lst.insert(indx, "Insert elemenet"); // вставка элемента так, чтобы у него был индекс indx
 
-    int var = lst_int[1];
-    std::cout << "int var: " << var << std::endl;
-    lst_int[2] = -5;
+    std::string s = lst[0]; // получение данных из элемента с индексом 0
+    std::cout << "lst[0] = " << lst[0] << std::endl;
+    lst[0] = "hello"; // изменение данных в элементе с индексом 0
 
-    // Перебор первого списка
-    std::shared_ptr<Object<Complex>> ptr_lst = lst.get_head();
+    LinkedList<unsigned> lst_u; // еще один двусвязный список
+
+    lst_u.push_back(1);
+    lst_u.push_back(2);
+    lst_u.push_back(3);
+
+    unsigned var = lst_u[1];
+    std::cout << "var = " << var << std::endl;
+    lst_u[0] = 15;
+
+    // перебор элементов с конца в начало
+    std::shared_ptr< Object<std::string> > ptr_lst = lst.get_tail();
+    std::cout << "reversed string lst" << std::endl;
     while(ptr_lst) {
-        Complex res = ptr_lst->get_data();
-        std::cout << res.re << "," << res.im << " ";
-        ptr_lst = ptr_lst->get_next();
+        std::string res = ptr_lst->get_data();
+        std::cout << res << " ";
+        ptr_lst = ptr_lst->get_prev();
     }
     std::cout << std::endl;
 
-    // Перебор второго списка
-    std::shared_ptr<Object<int>> ptr_lst_int = lst_int.get_head();
-    while(ptr_lst_int) {
-        int a = ptr_lst_int->get_data();
+    // перебор элементов с начала и до конца
+    std::shared_ptr< Object<unsigned> > ptr_lst_u = lst_u.get_head();
+    std::cout << "direct unsigned lst" << std::endl;
+    while(ptr_lst_u) {
+        unsigned a = ptr_lst_u->get_data();
         std::cout << a << " ";
-        ptr_lst_int = ptr_lst_int->get_next();
+        ptr_lst_u = ptr_lst_u->get_next();
     }
     std::cout << std::endl;
-
-    return 0;
 }
