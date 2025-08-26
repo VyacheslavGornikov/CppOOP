@@ -11,7 +11,7 @@ SRCS = $(wildcard $(SRC_DIR)/*.cpp)
 
 
 OBJ_CUR = \
-	$(OBJ_DIR)/oop_6_5_2_double_linked_list.o
+	$(OBJ_DIR)/oop_6_5_3_dynamic_array.o
 
 # Цели сборки по умолчанию
 TARGETS = my_prog
@@ -19,7 +19,7 @@ TARGETS = my_prog
 # Компилятор и флаги
 CC = g++
 WARN_FLAGS = -Wall -Werror
-STD_FLAG = -std=c++17
+STD_FLAG = -std=c++20
 CFLAGS = -I$(INC_DIR) $(STD_FLAG) $(WARN_FLAGS) -g
 
 # Правило для цели сборки по умолчанию

@@ -177,8 +177,6 @@ void LinkedList<T>::insert(size_t index, const T& data)
     if (index > size)
         throw LinkedListIndexError("Invalid element index.");
 
-
-
     if (index == 0)
     {
         push_front(data);
